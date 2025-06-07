@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WARNING! LXM0N IS COMING!</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    body {
+      animation: bgGlitch 0.1s infinite alternate;
+    }
+    @keyframes bgGlitch {
+      0% { background-color: #000; }
+      100% { background-color: #111; }
+    }
+    .popup {
+      position: absolute;
+      width: 400px;
+      height: 200px;
+      background: #d3d3d3;
+      border: 4px solid #000;
+      box-shadow: 8px 8px 0px #222;
+      z-index: 1000;
+      padding: 10px;
+      font-size: 20px;
+    }
+    .title-bar {
+      background: navy;
+      color: white;
+      padding: 4px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .title-bar button {
+      background: red;
+      color: white;
+      border: none;
+      font-weight: bold;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+    }
+    .popup-buttons {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .popup-buttons button {
+      margin: 5px;
+      padding: 8px 16px;
+    }
+    #bossFace {
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+      width: 100px;
+      animation: laugh 0.4s infinite alternate;
+      z-index: 2000;
+    }
+    @keyframes laugh {
+      0% { transform: scaleY(1); }
+      100% { transform: scaleY(1.2); }
+    }
+  </style>
+</head>
+<body>
+  <img id="bossFace" src="Untitled194_20250607155319.png" alt="Boss">
+  <audio id="errorSound" src="error.mp3" preload="auto"></audio>
+  <audio id="laughSound" src="laugh.mp3" preload="auto" loop></audio>
+  <script>
+    const errorSound = document.getElementById('errorSound');
+    const laughSound = document.getElementById('laughSound');
+    setTimeout(() => { laughSound.play(); }, 20000);
+    function spawnPopup() {
+      const popup = document.createElement('div');
+      popup.className = 'popup';
+      popup.style.top = Math.random() * (window.innerHeight - 200) + 'px';
+      popup.style.left = Math.random() * (window.innerWidth - 400) + 'px';
+      popup.innerHTML = `
+        <div class="title-bar">
+          <span>System Error</span>
+          <button onclick="this.closest('.popup').remove()">X</button>
+        </div>
+        <div class="popup-text">⚠️ WARNING! LXM0N IS COMING!! ⚠️</div>
+        <div class="popup-buttons">
+          <button onclick="this.closest('.popup').remove()">OK</button>
+          <button onclick="this.closest('.popup').remove()">Cancel</button>
+        </div>
+      `;
+      document.body.appendChild(popup);
+      errorSound.currentTime = 0;
+      errorSound.play();
+    }
+    let interval = 1000;
+    function loopPopups() {
+      spawnPopup();
+      interval *= 0.97;
+      setTimeout(loopPopups, interval);
+    }
+    loopPopups();
+  </script>
+</body>
+</html>
